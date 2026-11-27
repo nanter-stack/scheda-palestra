@@ -47,12 +47,6 @@ nav button[aria-current=true]{background:var(--k);color:var(--t)}
 #timer{position:fixed;left:12px;right:12px;bottom:90px;max-width:536px;margin:auto;background:#17191c;color:#fff;border-radius:12px;padding:10px 14px;display:none;align-items:center;justify-content:space-between;gap:10px;z-index:3;box-shadow:0 6px 24px #0006}
 #timer output{font:400 38px/1 Anton,sans-serif}#timer.done{background:#17803d}
 #timer span{flex:1;font-size:13px}#timer button{background:#fff;color:#17191c}
-body{padding-bottom:160px}
-#pause{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(84px + env(safe-area-inset-bottom));display:flex;gap:6px;align-items:center;z-index:2;background:#17191c;color:#fff;border:2px solid #fff;border-radius:99px;padding:5px 6px 5px 16px;box-shadow:0 4px 16px #0006;white-space:nowrap}
-#pause span{font:400 18px/1 Anton,sans-serif;margin-right:4px}
-#pause button{border-radius:99px;border:0;padding:7px 12px;font-weight:600}
-body:has(#timer[style*=flex]) #pause{display:none}
-#timer{bottom:calc(84px + env(safe-area-inset-bottom))}
 </style></head><body class="A">
 <header><div class="wrap"><h1 id="title"></h1>
 <div class="sub"><div id="progress" aria-live="polite"></div>
@@ -60,7 +54,6 @@ body:has(#timer[style*=flex]) #pause{display:none}
 <main class="wrap"><div id="warn" role="alert"></div><div id="list"></div>
 <section class="tools">I pesi si salvano mentre scrivi. Ogni tanto fai una copia di sicurezza: serve se cambi telefono o cancelli i dati del browser.
 <div><button id="exp">Scarica copia dei pesi</button><button id="imp">Ripristina da copia</button><input type="file" id="file" accept=".json,application/json" hidden></div></section></main>
-<div id="pause" role="group" aria-label="Avvia il conto alla rovescia"><span>Pausa</span><button data-s="60">1:00</button><button data-s="90">1:30</button><button data-s="120">2:00</button></div>
 <div id="timer"><output></output><span></span><button id="plus">+15 s</button><button id="stop">Chiudi</button></div>
 <nav aria-label="Giorni"><div class="wrap" id="nav"></div></nav>
 <script>
@@ -134,7 +127,6 @@ function paint(){const left=Math.max(0,Math.ceil((end-Date.now())/1000));$("#tim
  if(!left){clearInterval(tick);$("#timer").className="done";$("#timer span").textContent="Recupero finito, vai!";navigator.vibrate&&navigator.vibrate([300,150,300])}}
 function run(){clearInterval(tick);$("#timer").className="";tick=setInterval(paint,250);paint()}
 function start(s,name){end=Date.now()+s*1000;$("#timer").style.display="flex";$("#timer span").textContent=name;run()}
-document.querySelectorAll("#pause button").forEach(b=>b.onclick=()=>start(+b.dataset.s,"Pausa"));
 $("#plus").onclick=()=>{end=Math.max(end,Date.now())+15000;$("#timer span").textContent="Recupero";run()};
 $("#stop").onclick=()=>{clearInterval(tick);$("#timer").style.display="none"};
 $("#date").onchange=e=>{date=e.target.value||iso();picked=date!==iso();render()};
